@@ -1,0 +1,1526 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Portfolio</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Comic+Neue:wght@400;700&family=Fredoka+One&display=swap" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#1F2937',
+                        darker: '#111827',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 1s ease-in-out',
+                        'slide-up': 'slideUp 0.8s ease-out',
+                        'float': 'float 3s ease-in-out infinite',
+                    },
+                    keyframes: {
+                        fadeIn: { '0%': { opacity: '0' }, '100%': { opacity: '1' } },
+                        slideUp: { '0%': { transform: 'translateY(20px)', opacity: '0' }, '100%': { transform: 'translateY(0)', opacity: '1' } },
+                        float: { '0%, 100%': { transform: 'translateY(0)' }, '50%': { transform: 'translateY(-10px)' } }
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        html, body { 
+            scroll-behavior: smooth;
+            max-width: 100%;
+            overflow-x: hidden;
+        }
+        /* Navigation styles */
+        .nav-link { 
+            position: relative;
+            font-size: 1.125rem !important; /* 18px */
+            line-height: 1.5rem !important; /* 24px */
+            font-weight: 500 !important;
+        }
+        .nav-link::after {
+            content: ''; position: absolute; width: 0; height: 2px; bottom: -2px; left: 0;
+            background: linear-gradient(90deg, #3b82f6, #8b5cf6);
+            transition: width 0.3s ease;
+        }
+        
+        /* Skill Bar Animation */
+        .skills-container {
+            margin-bottom: 2rem;
+        }
+        
+        .skills-container .progress-bar {
+            width: 100%;
+            height: 8px;
+            background-color: #e5e7eb;
+            border-radius: 4px;
+            overflow: hidden;
+            position: relative;
+            margin-bottom: 1.5rem;
+        }
+        
+        .skills-container .progress-fill {
+            height: 100%;
+            position: absolute;
+            left: 0;
+            top: 0;
+            width: 0;
+            transition: width 1.5s ease-in-out;
+            border-radius: 4px;
+        }
+        
+        /* Hard Skills Section Hover */
+        #hard-skills:hover .progress-fill {
+            width: var(--progress-width);
+        }
+        
+        /* Soft Skills Section Hover */
+        #soft-skills:hover .progress-fill {
+            width: var(--progress-width);
+        }
+        
+        /* Keep filled state after hover */
+        #hard-skills.filled .progress-fill,
+        #soft-skills.filled .progress-fill {
+            width: var(--progress-width) !important;
+        }
+        .nav-link:hover::after { width: 100%; }
+        .project-card { transition: transform 0.3s ease, box-shadow 0.3s ease; }
+        .project-card:hover { transform: translateY(-5px); box-shadow: 0 10px 25px -5px rgba(0, 0, 0, 0.1); }
+        
+        /* Wave Text Animation */
+        .wave-text {
+            display: inline-block;
+        }
+        .wave-text {
+            display: inline-flex;
+            align-items: center;
+            flex-wrap: wrap;
+            line-height: 1.2;
+        }
+        .wave-text span {
+            display: inline-block;
+            animation: wave 1.5s ease-in-out infinite;
+            animation-delay: calc(0.1s * var(--i));
+            margin: 0 -1px;
+        }
+        @keyframes wave {
+            0%, 40%, 100% { transform: translateY(0); }
+            20% { transform: translateY(-15px); }
+        }
+
+        /* Custom Fonts and Text Styles */
+        body {
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            font-family: 'Comic Neue', cursive;
+        }
+        
+        h1, h2, h3, h4, h5, h6 {
+            font-family: 'Fredoka One', cursive;
+            letter-spacing: 0.5px;
+        }
+        
+        .section-title {
+            font-size: 2.5rem;
+            background: linear-gradient(90deg, #FF6B6B, #4ECDC4);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.1);
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+            display: inline-block;
+        }
+        
+        .project-title {
+            font-size: 2rem;
+            background: linear-gradient(90deg, #FF9A8B, #FF6B6B);
+            -webkit-background-clip: text;
+            background-clip: text;
+            -webkit-text-fill-color: transparent;
+            margin-bottom: 1rem;
+            line-height: 1.2;
+            display: inline-block;
+        }
+        
+        .fun-text {
+            font-family: 'Comic Neue', cursive;
+            color: #4A4A4A;
+        }
+        
+        .dark .fun-text {
+            color: #E2E8F0;
+        }
+
+        /* Animasi Scroll */
+        .fade-in {
+            opacity: 0;
+            transform: translateY(30px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .fade-in.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .slide-in-left {
+            opacity: 0;
+            transform: translateX(-50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .slide-in-left.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .slide-in-right {
+            opacity: 0;
+            transform: translateX(50px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .slide-in-right.visible {
+            opacity: 1;
+            transform: translateX(0);
+        }
+
+        .zoom-in {
+            opacity: 0;
+            transform: scale(0.9);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+
+        .zoom-in.visible {
+            opacity: 1;
+            transform: scale(1);
+        }
+
+        .staggered-item {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+
+        .staggered-item.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-darker text-gray-800 dark:text-gray-200 flex flex-col min-h-screen">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/80 dark:bg-darker/80 backdrop-blur-md z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="welcome.html" class="text-primary hover:text-accent transition-colors flex items-center" title="Back to Welcome" style="font-size: 1.5rem; min-width: 24px; min-height: 24px;">
+                        <i class="fas fa-arrow-left" style="font-size: 1.25rem; width: 24px; height: 24px; display: flex; align-items: center; justify-content: center;"></i>
+                    </a>
+                    <a href="#home" class="text-2xl font-bold text-primary hover:text-primary/80 transition-colors">Portfolio</a>
+                </div>
+                <div class="hidden md:flex space-x-8">
+                    <a href="#home" class="nav-link">Home</a>
+                    <a href="#about" class="nav-link">About</a>
+                    <a href="#projects" class="nav-link">Projects</a>
+                    <a href="#certificates" class="nav-link">Certificates</a>
+                    <a href="#organization" class="nav-link">Organization</a>
+                    <a href="#contact" class="nav-link">Contact</a>
+                    <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700">
+                        <i class="fas fa-moon dark:hidden"></i>
+                        <i class="fas fa-sun hidden dark:block"></i>
+                    </button>
+                </div>
+                <div class="md:hidden flex items-center">
+                    <button id="mobile-menu-button" class="text-gray-700 dark:text-gray-200 hover:text-primary focus:outline-none">
+                        <i class="fas fa-bars text-2xl"></i>
+                    </button>
+                </div>
+            </div>
+            <!-- Mobile menu, show/hide based on menu state -->
+            <div id="mobile-menu" class="hidden md:hidden bg-white dark:bg-darker shadow-lg rounded-b-lg">
+                <div class="px-2 pt-2 pb-3 space-y-1">
+                    <a href="#home" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Home</a>
+                    <a href="#about" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">About</a>
+                    <a href="#projects" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Projects</a>
+                    <a href="#certificates" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Certificates</a>
+                    <a href="#organization" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Organization</a>
+                    <a href="#contact" class="block px-3 py-2 rounded-md text-base font-medium text-gray-700 dark:text-gray-200 hover:bg-gray-100 dark:hover:bg-gray-700">Contact</a>
+                </div>
+            </div>
+        </div>
+    </nav>
+
+    <main class="flex-grow">
+        <!-- Hero Section -->
+        <section id="home" class="min-h-screen flex items-center pt-20">
+            <div class="max-w-6xl mx-auto px-6 py-20">
+                <div class="grid md:grid-cols-2 gap-12 items-center">
+                    <div class="fade-in">
+                        <h1 class="text-4xl md:text-6xl font-bold mb-6 fun-text">
+                            Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">Marsakila</span> 👋
+                        </h1>
+                        <h2 class="text-2xl md:text-4xl mb-6 text-gray-600 dark:text-gray-300 fun-text">
+                            Non Fiction Writer
+                        </h2>
+                        <p class="text-xl mb-8 text-gray-600 dark:text-gray-300 fun-text">
+                            Nonfiction writers play a crucial role in educating, informing, and inspiring readers by presenting reality in an engaging and meaningful way. ✨
+                        </p>
+                        <div class="flex space-x-4">
+                            <a href="#contact" class="bg-primary text-white px-6 py-3 rounded-lg font-medium hover:bg-blue-600 transition">Contact Me</a>
+                            <a href="#projects" class="border-2 border-primary text-primary px-6 py-3 rounded-lg font-medium hover:bg-primary/10 transition">View Work</a>
+                        </div>
+                    </div>
+                    <div class="hidden md:flex justify-center animate-float">
+                        <div class="relative w-80 h-80 bg-gradient-to-br from-primary to-secondary rounded-full p-1">
+                            <img id="profile-dark" src="image/img/Profil_Marsa.jpg" alt="Marsakila Rimu Nariya" class="absolute inset-0 w-full h-full object-cover rounded-full transition-opacity duration-500">
+                            <img id="profile-light" src="image/img/Profil_Marsa_blue.png" alt="Marsakila Rimu Nariya" class="absolute inset-0 w-full h-full object-cover rounded-full opacity-0 transition-opacity duration-500">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="py-20 bg-gray-100 dark:bg-gray-800">
+            <div class="max-w-6xl mx-auto px-6">
+                <h2 class="section-title text-center">About <span class="text-transparent bg-clip-text bg-gradient-to-r from-yellow-400 to-pink-500">Me</span></h2>
+                <div class="space-y-12">
+                    <!-- About Me Section -->
+                    <div class="bg-white dark:bg-gray-700 p-8 rounded-xl shadow-lg slide-in-left">
+                        <div class="animate-slide-up">
+                            <h1 class="text-4xl md:text-6xl font-bold mb-6 fun-text">
+                                Hi, I'm <span class="text-transparent bg-clip-text bg-gradient-to-r from-pink-500 to-purple-600">Marsakila</span>
+                            </h1>
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
+                                <p class="text-lg text-gray-600 dark:text-gray-300 fun-text leading-relaxed">
+                                    I am Marsakila Rimu Nariya, originally from Serang Regency, Banten Province. I am currently pursuing my undergraduate degree at Diponegoro University majoring in Social Anthropology. I have a strong interest in research in the field of social humanities and also have an interest in writing and editing.
+                                    <br><br>
+                                    This is proven by several achievements in the field of writing, such as 1st Place in the AstraTech Essay, Passing the OPSI Proposal, and 1st Place in School-level Research. In addition, I also have an interest in the social field such as being a child ambassador in Banten Province and Serang Regency and being a member of the OSIS Public Relations division in high school. 🚀
+                                </p>
+                                <div class="space-y-6">
+                                    <div class="p-6 bg-gray-50 dark:bg-gray-600 rounded-lg">
+                                        <h4 class="font-medium text-gray-700 dark:text-gray-200 mb-2">Name</h4>
+                                        <p class="text-gray-600 dark:text-gray-300">Marsakila Rimu Nariya</p>
+                                    </div>
+                                    <div class="p-6 bg-gray-50 dark:bg-gray-600 rounded-lg">
+                                        <h4 class="font-medium text-gray-700 dark:text-gray-200 mb-2">Email</h4>
+                                        <p class="text-gray-600 dark:text-gray-300">marsakilarimu19@gmail.com</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Skills Section -->
+                    <div class="zoom-in bg-white/80 dark:bg-gray-700/80 backdrop-blur-sm p-8 rounded-xl shadow-lg">
+                        <h3 class="project-title text-center mb-8">My Skills 🛠️</h3>
+                        <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                            <!-- Hard Skills -->
+                            <div id="hard-skills" class="skills-container">
+                                <div class="inline-flex items-center mb-4">
+                                    <div class="w-1 h-6 bg-primary mr-2 rounded-full"></div>
+                                    <h4 class="text-xl font-reguler text-gray-800 dark:text-white">Hard Skills</h4>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="skill-item">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-gray-700 dark:text-gray-300">Canva</span>
+                                            <span class="text-sm text-gray-500">65%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-primary" style="--progress-width: 65%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="skill-item">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-gray-700 dark:text-gray-300">Basic Microsoft Word</span>
+                                            <span class="text-sm text-gray-500">90%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-primary" style="--progress-width: 90%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="skill-item">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-gray-700 dark:text-gray-300">Non Fiction Writing</span>
+                                            <span class="text-sm text-gray-500">89%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-primary" style="--progress-width: 89%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="skill-item">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-gray-700 dark:text-gray-300">Research</span>
+                                            <span class="text-sm text-gray-500">80%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-primary" style="--progress-width: 80%"></div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <!-- Soft Skills -->
+                            <div id="soft-skills" class="skills-container">
+                                <div class="inline-flex items-center mb-4">
+                                    <div class="w-1 h-6 bg-secondary mr-2 rounded-full"></div>
+                                    <h4 class="text-xl font-reguler text-gray-800 dark:text-white">Soft Skills</h4>
+                                </div>
+                                <div class="space-y-5">
+                                    <div class="skill-item">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-gray-700 dark:text-gray-300">Communication</span>
+                                            <span class="text-sm text-gray-500">85%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-secondary" style="--progress-width: 85%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-gray-700 dark:text-gray-300">Problem Solving</span>
+                                            <span class="text-sm text-gray-500">88%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-secondary" style="--progress-width: 88%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-gray-700 dark:text-gray-300">Time Management</span>
+                                            <span class="text-sm text-gray-500">75%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-secondary" style="--progress-width: 75%"></div>
+                                        </div>
+                                    </div>
+                                    <div class="skill-item">
+                                        <div class="flex justify-between mb-1">
+                                            <span class="text-gray-700 dark:text-gray-300">Emotional Intelegence</span>
+                                            <span class="text-sm text-gray-500">78%</span>
+                                        </div>
+                                        <div class="progress-bar">
+                                            <div class="progress-fill bg-secondary" style="--progress-width: 78%"></div>
+                                        </div>
+                                    </div>
+                                    
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Projects Section -->
+        <section id="projects" class="py-20 bg-white dark:bg-gray-900">
+          <div class="container mx-auto px-4 sm:px-6">
+            <div class="container">
+              <h2 class="section-title fade-in">My <em>Creative</em> Works</h2>
+              
+              <!-- Project 1 - Floating Circle -->
+              <div id="project1" class="project floating-circle slide-in-left">
+                <div class="project-image">
+                  <img id="project1-dark" src="image/project/p1.1.png" alt="UI Design Project Dark" class="dark:block hidden">
+                  <img id="project1-light" src="image/project/p1.2.png" alt="UI Design Project Light" class="dark:hidden block">
+                </div>
+                <div class="project-content">
+                  <h3>Board Game Hands on Heroes</h3>
+                  <ul class="tech-tags">
+                    <li>Microsoft Words</li>
+                    <li>SPSS</li>
+                    <li>Canva</li>
+                  </ul>
+                  <button onclick="openProjectModal('Board Game Hands on Heroes', 'by The Ministry of Law and Human Rights for our innovation journey, which titled Board Game Hands on Heroes: The Sign Language Adventure. This is a board game-based learning media to support the teaching of Indonesian Sign Language (BISINDO) in creating an inclusive society. It is hoped that Hands on Heroes can be an effective learning medium to support inclusivity efforts in society in a more enjoyable and less boring way, so that more people will be interested in learning Indonesian Sign Language (BISINDO) and understand the importance of inclusive communication🙌🏻.', ['Microsot Words', 'SPSS', 'Canva'], 'image/project/p1.1.png', 'image/project/p1.2.png')" class="cta-link hover:text-primary transition-colors duration-300 flex items-center group">
+                    <span>View Project</span>
+                    <span class="ml-2 group-hover:translate-x-1 transition-transform duration-300">↗</span>
+                  </button>
+                </div>
+              </div>
+          
+              <!--Project 2 - Tilted Rectangle -->
+              <!-- <div id="project2" class="project tilted-rect slide-in-right">
+                <div class="project-content">
+                  <h3>Augmented Reality Museum</h3>
+                  <p>Interactive exhibits with AR navigation</p>
+                  <a href="#project2" class="cta-link hover:text-primary transition-colors duration-300 flex items-center group mt-4">
+                    <span>View Project</span>
+                    <span class="ml-2 group-hover:translate-x-1 transition-transform duration-300">↗</span>
+                  </a>
+                  <ul class="tech-tags">
+                    <li>Unity</li>
+                    <li>ARKit</li>
+                    <li>3D Modeling</li>
+                  </ul>
+                </div>
+                <div class="project-image">
+                  <img src="https://source.unsplash.com/random/800x800/?ar,tech" alt="AR Museum Project">
+                </div>
+              </div>
+          
+              Project 3 - Organic Blob Shape 
+              <div id="project3" class="project organic-blob">
+                <svg viewBox="0 0 500 500" class="blob-shape">
+                  <path d="M441.5,320.5Q447,391,376,421Q305,451,239,432.5Q173,414,125.5,364Q78,314,63,239Q48,164,109.5,115Q171,66,242,59Q313,52,357.5,106Q402,160,432,205Q462,250,441.5,320.5Z" />
+                </svg>
+                <div class="project-content">
+                  <h3>Generative Art Engine</h3>
+                  <p>Algorithmic patterns with user interaction</p>
+                  <a href="#project3" class="cta-link hover:text-primary transition-colors duration-300 flex items-center group mt-4">
+                    <span>View Project</span>
+                    <span class="ml-2 group-hover:translate-x-1 transition-transform duration-300">↗</span>
+                  </a>
+                  <ul class="tech-tags">
+                    <li>p5.js</li>
+                    <li>GLSL</li>
+                    <li>Processing</li>
+                  </ul>
+                </div>
+                <div class="project-image">
+                  <img src="https://source.unsplash.com/random/800x800/?generative,art" alt="Generative Art">
+                </div>
+              </div>
+            </div>
+            -->
+          </section>
+          
+          <style>
+          .fluid-projects {
+            padding: 8rem 2rem;
+            background: radial-gradient(circle at 10% 20%, #f0f4ff 0%, #e6f0ff 100%);
+            overflow-x: hidden;
+          }
+          .dark .fluid-projects {
+            background: radial-gradient(circle at 10% 20%, #0f172a 0%, #1e293b 100%);
+          }
+          
+          .container {
+            max-width: 1400px;
+            margin: 0 auto;
+            position: relative;
+          }
+          
+          .section-title {
+            font-size: 4rem;
+            font-weight: 800;
+            text-align: center;
+            margin-bottom: 6rem;
+            letter-spacing: -0.03em;
+            color: #1f2937;
+          }
+          .dark .section-title {
+            color: #f3f4f6;
+          }
+          .section-title em {
+            font-style: normal;
+            background: linear-gradient(90deg, #ff7e5f, #feb47b);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+          }
+          
+          /* Floating Circle Project */
+          .floating-circle {
+            display: flex;
+            align-items: center;
+            gap: 5rem;
+            margin-bottom: 10rem;
+          }
+          .floating-circle .project-image {
+            width: 400px;
+            height: 400px;
+            border-radius: 50%;
+            overflow: hidden;
+            box-shadow: 30px 30px 60px rgba(0,0,0,0.1);
+            transform: translateY(-50px) rotate(-5deg);
+            flex-shrink: 0;
+          }
+          .floating-circle .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.8s cubic-bezier(0.23, 1, 0.32, 1);
+          }
+          .floating-circle:hover .project-image img {
+            transform: scale(1.1);
+          }
+          .floating-circle .project-content {
+            max-width: 500px;
+            color: #1f2937;
+          }
+          .dark .floating-circle .project-content {
+            color: #f3f4f6;
+          }
+          .floating-circle h3 {
+            font-size: 2.5rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+          }
+          .floating-circle p {
+            font-size: 1.2rem;
+            color: #555;
+            margin-bottom: 2rem;
+            line-height: 1.6;
+          }
+          
+          /* Tilted Rectangle Project */
+          .tilted-rect {
+            display: flex;
+            justify-content: flex-end;
+            margin-left: 10%;
+            margin-bottom: 12rem;
+            position: relative;
+          }
+          .tilted-rect .project-image {
+            width: 60%;
+            height: 500px;
+            transform: skewX(-10deg);
+            overflow: hidden;
+            box-shadow: -40px 40px 80px rgba(0,0,0,0.1);
+            z-index: 1;
+          }
+          .tilted-rect .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transform: skewX(10deg) scale(1.1);
+            transition: transform 0.8s ease;
+          }
+          .tilted-rect:hover .project-image img {
+            transform: skewX(10deg) scale(1);
+          }
+          .tilted-rect .project-content {
+            position: absolute;
+            left: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            background: white;
+            padding: 4rem;
+            width: 50%;
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.1);
+            z-index: 2;
+            color: #1f2937;
+          }
+          .dark .tilted-rect .project-content {
+            background: #1e293b;
+            color: #f3f4f6;
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.3);
+          }
+          .tilted-rect h3 {
+            font-size: 2.2rem;
+            margin-bottom: 1rem;
+          }
+          
+          /* Organic Blob Project */
+          .organic-blob {
+            position: relative;
+            height: 700px;
+            margin-top: 5rem;
+          }
+          .blob-shape {
+            position: absolute;
+            width: 600px;
+            height: 600px;
+            left: 50%;
+            top: 50%;
+            transform: translate(-30%, -50%);
+            fill: #f8f9fa;
+            z-index: 0;
+          }
+          .dark .blob-shape {
+            fill: #1e293b;
+          }
+          .organic-blob .project-image {
+            position: absolute;
+            width: 500px;
+            height: 500px;
+            right: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            border-radius: 30px;
+            overflow: hidden;
+            box-shadow: 20px 20px 60px rgba(0,0,0,0.1);
+            z-index: 1;
+          }
+          .organic-blob .project-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+          }
+          .organic-blob .project-content {
+            position: absolute;
+            left: 15%;
+            top: 50%;
+            transform: translateY(-50%);
+            max-width: 400px;
+            z-index: 2;
+            color: #1f2937;
+          }
+          .dark .organic-blob .project-content {
+            color: #f3f4f6;
+          }
+          .organic-blob h3 {
+            font-size: 2.8rem;
+            margin-bottom: 1.5rem;
+            line-height: 1.2;
+          }
+          
+          /* Shared Styles */
+          .tech-tags {
+            display: flex;
+            gap: 0.8rem;
+            list-style: none;
+            padding: 0;
+            margin: 2rem 0;
+          }
+          .tech-tags li {
+            background: rgba(0,0,0,0.05);
+            padding: 0.5rem 1.2rem;
+            border-radius: 100px;
+            font-size: 0.9rem;
+            font-weight: 500;
+            color: #1f2937;
+          }
+          .dark .tech-tags li {
+            background: rgba(255,255,255,0.1);
+            color: #e5e7eb;
+          }
+          .cta-link {
+            display: inline-block;
+            font-size: 1.1rem;
+            font-weight: 600;
+            color: #ff7e5f;
+            text-decoration: none;
+            transition: transform 0.3s ease, color 0.3s ease;
+          }
+          .dark .cta-link {
+            color: #f97316;
+          }
+          .cta-link:hover {
+            transform: translateX(10px);
+          }
+          
+          @media (max-width: 1200px) {
+            .floating-circle {
+              flex-direction: column;
+              gap: 3rem;
+            }
+            .floating-circle .project-image {
+              transform: none;
+            }
+            .tilted-rect {
+              flex-direction: column;
+              margin-left: 0;
+            }
+            .tilted-rect .project-content {
+              position: relative;
+              width: 100%;
+              transform: none;
+              margin-top: -100px;
+            }
+            .tilted-rect .project-image {
+              width: 100%;
+              transform: none;
+            }
+            .tilted-rect .project-image img {
+              transform: none;
+            }
+            .organic-blob {
+              height: auto;
+              padding: 3rem 0;
+            }
+            .blob-shape {
+              display: none;
+            }
+            .organic-blob .project-image,
+            .organic-blob .project-content {
+              position: relative;
+              left: auto;
+              right: auto;
+              top: auto;
+              transform: none;
+              width: 100%;
+              max-width: 100%;
+              margin-bottom: 2rem;
+            }
+          }
+          </style>
+
+        <!-- Certificates Section -->
+        <section id="certificates" class="py-10 md:py-20 bg-gray-100 dark:bg-gray-800 relative">
+            <div class="max-w-6xl mx-auto px-4 sm:px-6">
+                <h2 class="section-title text-center fade-in">My <span class="text-transparent bg-clip-text bg-gradient-to-r from-green-400 to-blue-500">Certificates</span> 🏆</h2>
+                <div class="grid grid-cols-2 sm:grid-cols-2 md:grid-cols-2 lg:grid-cols-3 gap-3 sm:gap-4 md:gap-6 pb-16">
+                    <!-- Certificate 1 -->
+                    <div class="bg-white dark:bg-gray-700 rounded-lg sm:rounded-xl shadow-sm sm:shadow-md overflow-hidden hover:shadow-lg transition-transform hover:scale-[1.02] sm:hover:scale-105 duration-300 staggered-item transform scale-90 sm:scale-100">
+                        <div class="h-32 sm:h-48 overflow-hidden cursor-zoom-in" onclick="openImageModal('image/certificate/Essai_Astra.png', '1st Place National Essay Competition')">
+                            <img src="image/certificate/Essai_Astra.png" alt="1st Place National Essay Competition" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-3 sm:p-6">
+                            <h3 class="text-base sm:text-xl font-medium-2 line-clamp-2">1st Place National Essay Competition</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-2">Issued by: Astra - 15 December 2024</p>
+                            <div class="flex items-center text-xs sm:text-sm text-gray-500">
+                                <i class="far fa-calendar-alt mr-1 sm:mr-2"></i>
+                                <span>2024</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate 2 -->
+                    <div class="bg-white dark:bg-gray-700 rounded-lg sm:rounded-xl shadow-sm sm:shadow-md overflow-hidden hover:shadow-lg transition-transform hover:scale-[1.02] sm:hover:scale-105 duration-300 staggered-item transform scale-90 sm:scale-100">
+                        <div class="h-32 sm:h-48 overflow-hidden cursor-pointer" onclick="openModal('image\certificate\DutaAnakBanten.png', 'Banten Childrens ambassador')">
+                            <img src="image\certificate\DutaAnakBanten.png" alt="Banten Childrens ambassador" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-3 sm:p-6">
+                            <h3 class="text-base sm:text-xl font-medium mb-1 sm:mb-2 line-clamp-2">Banten Childrens ambassador</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-xs sm:text-sm mb-2 sm:mb-4 line-clamp-2">Issued by: Women's Empowerment, Child Protection, Population, Family Planning Service - 7 july 2023</p>
+                            <div class="flex items-center text-xs sm:text-sm text-gray-500">
+                                <i class="far fa-calendar-alt mr-1 sm:mr-2"></i>
+                                <span>2024</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Certificate 3 -->
+                    <div class="bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-transform hover:scale-105 duration-300 staggered-item">
+                        <div class="h-32 sm:h-48 overflow-hidden cursor-zoom-in" onclick="openImageModal('image/certificate/DutaAnakBanten.png', 'Banten Childrens ambassador')">
+                            <img src="image\certificate\DutaAnakBanten.png" alt="Banten Childrens ambassador" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-medium mb-2">Banten Childrens ambassador</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Issued by: Women's Empowerment, Child Protection, Population, Family Planning Service - 7 july 2023</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="far fa-calendar-alt mr-2"></i>
+                                <span>2023</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- View All Button -->
+                <div class="absolute bottom-6 right-6 z-[60]">
+                    <a href="certificates.html" class="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-green-400 to-blue-500 text-white rounded-lg md:rounded-full font-medium hover:opacity-90 transition-all shadow-lg transform hover:scale-105 active:scale-95"
+                       style="box-shadow: 0 4px 15px rgba(16, 185, 129, 0.3);">
+                        <span class="hidden sm:inline">View All</span> Certificates
+                        <i class="fas fa-arrow-right ml-2"></i>
+                    </a>
+                </div>
+            </div>
+        </section>
+
+        <!-- Organization Section -->
+        <section id="organization" class="py-20 bg-gray-50 dark:bg-gray-900 relative overflow-hidden">
+            <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+                <h2 class="section-title text-center mb-16">Organization & <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-500 to-purple-500">Experience</span> 👥</h2>
+                
+                <!-- Scrapbook Style Container -->
+                <div class="relative min-h-[600px] md:min-h-[800px] bg-gray-100 dark:bg-gray-800/50 rounded-3xl p-4 md:p-8 overflow-hidden">
+                    <!-- Background Image -->
+                    <div class="absolute inset-0 w-full h-full bg-cover bg-center opacity-20" style="background-image: url('image/organization/bg organization.jpg');"></div>
+                    <!-- Card 1 - Rotated Right -->
+                    <div class="absolute bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 w-72 md:w-80 cursor-pointer transition-all duration-300 ease-in-out" 
+                         style="top: 10%; left: 10%; transform: rotate(5deg); z-index: 3;"
+                         onmouseover="this.style.transform='rotate(0deg) scale(1.05)'; this.style.zIndex='50';"
+                         onmouseout="this.style.transform='rotate(5deg)'; this.style.zIndex='3';">
+                        <div class="relative h-40 mb-4 overflow-hidden rounded-lg cursor-zoom-in" 
+                             onclick="openImageModal('image/organization/Osis.jpg', 'OSIS, SMAN 1 Ciruas (Student Council)')">
+                            <img src="image/organization/Osis.jpg" alt="Leadership" class="w-full h-full object-cover">
+                            <div class="absolute bottom-2 right-2 bg-blue-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                2023-2024
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <div class="w-3 h-3 bg-blue-500 rounded-full mr-2"></div>
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">Student Council of SMAN 1 Ciruas</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Public Relations Division</p>
+                    </div>
+
+                    <!-- Card 2 - Rotated Left -->
+                    <div class="absolute bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 w-72 md:w-80 cursor-pointer transition-all duration-300 ease-in-out" 
+                         style="bottom: 10%; right: 15%; transform: rotate(-2deg); z-index: 1;"
+                         onmouseover="this.style.transform='rotate(2deg) scale(1.05)'; this.style.zIndex='50';"
+                         onmouseout="this.style.transform='rotate(-2deg)'; this.style.zIndex='1';">
+                        <div class="relative h-40 mb-4 overflow-hidden rounded-lg cursor-zoom-in" 
+                             onclick="openImageModal('image/organization/ForumAnakBanten.jpg', 'Banten Children\'s Forum')">
+                            <img src="image/organization/ForumAnakBanten.jpg" alt="Banten Children's Forum" class="w-full h-full object-cover">
+                            <div class="absolute bottom-2 right-2 bg-green-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                2023-2025
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <div class="w-3 h-3 bg-green-500 rounded-full mr-2"></div>
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">Banten Children's Forum</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Creative Media Division</p>
+                       </div>
+
+                    <!-- Card 3 - Rotated Slightly Right -->
+                    <div class="absolute bg-white dark:bg-gray-700 rounded-xl shadow-lg p-6 w-72 md:w-80 cursor-pointer transition-all duration-300 ease-in-out" 
+                         style="top: 50%; left: 15%; transform: rotate(3deg); z-index: 2;"
+                         onmouseover="this.style.transform='rotate(0deg) scale(1.05)'; this.style.zIndex='50';"
+                         onmouseout="this.style.transform='rotate(3deg)'; this.style.zIndex='2';">
+                        <div class="relative h-40 mb-4 overflow-hidden rounded-lg cursor-zoom-in"
+                             onclick="openImageModal('image/organization/ForumAnakKabupaten.jpg', 'Serang Regency Children\'s Forum')">
+                            <img src="image/organization/ForumAnakKabupaten.jpg" alt="Serang Regency Children's Forum" class="w-full h-full object-cover">
+                            <div class="absolute bottom-2 right-2 bg-purple-500 text-white text-xs font-bold px-2 py-1 rounded-full">
+                                2023-2024
+                            </div>
+                        </div>
+                        <div class="flex items-center mb-2">
+                            <div class="w-3 h-3 bg-purple-500 rounded-full mr-2"></div>
+                            <h3 class="text-lg font-bold text-gray-800 dark:text-white">Serang Regency Children's Forum</h3>
+                        </div>
+                        <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">Manager</p>
+                    </div>
+                    <!-- View All Button -->
+                    <div class="absolute bottom-6 right-6 z-[60]">
+                        <button class="flex items-center justify-center px-6 py-3 bg-gradient-to-r from-blue-500 to-purple-500 text-white rounded-lg md:rounded-full font-medium hover:opacity-90 transition-all shadow-lg transform hover:scale-105 active:scale-95"
+                                onclick="window.location.href='organization.html'"
+                                style="box-shadow: 0 4px 15px rgba(99, 102, 241, 0.3);">
+                            <span class="hidden sm:inline">View All Organizations</span>
+                            <span class="sm:hidden">View All</span>
+                            <i class="fas fa-arrow-right ml-2"></i>
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="py-20 bg-white dark:bg-gray-800">
+            <div class="max-w-4xl mx-auto px-6">
+                <h2 class="section-title text-center fade-in">Get In <span class="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-purple-500">Touch</span> 💌</h2>
+                <div class="bg-white dark:bg-gray-700 rounded-xl shadow-lg p-8 zoom-in">
+                    <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+                        <!-- Email -->
+                        <a href="mailto:marsakilarimu19@gmail.com" class="flex items-center p-4 bg-gray-50 dark:bg-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors">
+                            <div class="bg-primary/10 p-3 rounded-full mr-4">
+                                <i class="fas fa-envelope text-primary text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Email</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">marsakilarimu19@gmail.com</p>
+                            </div>
+                        </a>
+                        
+                        <!-- WhatsApp -->
+                        <a href="https://wa.me/6282125346053" target="_blank" class="flex items-center p-4 bg-gray-50 dark:bg-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors">
+                            <div class="bg-green-100 dark:bg-green-900/30 p-3 rounded-full mr-4">
+                                <i class="fab fa-whatsapp text-green-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">WhatsApp</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">+62 821-2534-6053</p>
+                            </div>
+                        </a>
+                        
+                        <!-- Instagram -->
+                        <a href="https://www.instagram.com/mrrsykila" target="_blank" class="flex items-center p-4 bg-gray-50 dark:bg-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors">
+                            <div class="bg-pink-100 dark:bg-pink-900/30 p-3 rounded-full mr-4">
+                                <i class="fab fa-instagram text-pink-500 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">Instagram</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">@mrrsykila</p>
+                            </div>
+                        </a>
+                        
+                        <!-- LinkedIn -->
+                        <a href="https://www.linkedin.com/in/marsakila-rimu-nariya-ab4569304" target="_blank" class="flex items-center p-4 bg-gray-50 dark:bg-gray-600 rounded-lg hover:bg-gray-100 dark:hover:bg-gray-500 transition-colors">
+                            <div class="bg-blue-100 dark:bg-blue-900/30 p-3 rounded-full mr-4">
+                                <i class="fab fa-linkedin-in text-blue-600 text-xl"></i>
+                            </div>
+                            <div>
+                                <h3 class="font-semibold">LinkedIn</h3>
+                                <p class="text-gray-600 dark:text-gray-300 text-sm">linkedin.com/in/marsakila-rimu-nariya-ab4569304</p>
+                            </div>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+
+
+    <!-- Organization Modal -->
+    <div id="orgModal" class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4 hidden overflow-x-hidden">
+        <div class="bg-white dark:bg-gray-800 rounded-xl shadow-2xl max-w-2xl w-full max-h-[90vh] overflow-y-auto overflow-x-hidden">
+            <div class="relative w-full">
+                <button onclick="closeOrgModal()" class="absolute -top-4 -right-4 bg-red-500 text-white rounded-full w-8 h-8 flex items-center justify-center hover:bg-red-600 transition-colors z-10">
+                    <i class="fas fa-times"></i>
+                </button>
+                <div class="relative h-64 w-full overflow-hidden rounded-t-xl">
+                    <img id="modalOrgImage" src="" alt="Organization" class="w-full h-full object-cover">
+                    <div id="modalOrgBadge" class="absolute bottom-4 right-4 text-white text-sm font-bold px-3 py-1 rounded-full">
+                    </div>
+                </div>
+                <div class="p-6 w-full">
+                    <h3 id="modalOrgTitle" class="text-2xl font-bold text-gray-800 dark:text-white mb-2 break-words"></h3>
+                    <div class="flex items-center mb-4 flex-wrap">
+                        <div id="modalOrgColor" class="w-3 h-3 rounded-full mr-2 flex-shrink-0"></div>
+                        <p id="modalOrgRole" class="text-lg text-gray-600 dark:text-gray-300 font-medium break-words"></p>
+                    </div>
+                    <p id="modalOrgDescription" class="text-gray-700 dark:text-gray-300 mb-6 break-words"></p>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- About Column -->
+                <div class="fade-in">
+                    <h3 class="text-gray-800 dark:text-white text-xl font-bold mb-4">Marsakila Rimu Nariya</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Non Fiction Writer.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors transform hover:scale-125 duration-300">
+                            <i class="fab fa-github text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors transform hover:scale-125 duration-300">
+                            <i class="fab fa-linkedin text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-400 transition-colors transform hover:scale-125 duration-300">
+                            <i class="fab fa-instagram text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-gray-800 dark:text-white text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="#home" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Home</a></li>
+                        <li><a href="#about" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">About</a></li>
+                        <li><a href="#projects" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Projects</a></li>
+                        <li><a href="#certificates" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Certificates</a></li>
+                        <li><a href="#contact" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-gray-800 dark:text-white text-lg font-semibold mb-4">Contact Me</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-2 text-primary"></i>
+                            <a href="mailto:marsakilarimu19@gmail.com" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">marsakilarimu19@gmail.com</a>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-2 text-primary"></i>
+                            <a href="https://wa.me/6282125346053" target="_blank" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">+62 821-2534-6053</a>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-primary"></i>
+                            <span class="text-gray-600 dark:text-gray-300">Serang, Banten, Indonesia</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+                <p>&copy; 2023 Marsakila Rimu Nariya. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Image Modal -->
+    <div id="certificate-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
+        <div class="relative max-w-4xl w-full max-h-[90vh]">
+            <button id="close-modal" class="absolute -top-10 right-0 text-white hover:text-gray-300" onclick="closeModal()">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <img id="modal-image" src="" alt="Enlarged view" class="max-w-full max-h-[80vh] mx-auto">
+        </div>
+    </div>
+
+    <!-- Project Modal -->
+    <div id="project-modal" class="fixed inset-0 bg-black bg-opacity-75 z-50 flex items-center justify-center p-4 opacity-0 invisible transition-opacity duration-300">
+        <div class="relative">
+            <button onclick="closeProjectModal()" class="absolute -top-10 right-0 text-white hover:text-gray-300 z-50">
+                <svg class="w-8 h-8" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+                </svg>
+            </button>
+            <div class="bg-white dark:bg-gray-800 rounded-xl max-w-4xl w-full max-h-[90vh] overflow-y-auto relative">
+            <div class="p-6">
+                <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+                    <div class="project-images">
+                        <img id="project-modal-dark" src="" alt="Project Dark Mode" class="w-full h-auto rounded-lg shadow-lg dark:block hidden">
+                        <img id="project-modal-light" src="" alt="Project Light Mode" class="w-full h-auto rounded-lg shadow-lg dark:hidden block">
+                    </div>
+                    <div class="project-details relative overflow-hidden">
+                        <!-- Main Content -->
+                        <div id="project-main-content" class="transition-all duration-500 ease-in-out">
+                            <h3 id="project-modal-title" class="text-2xl font-bold mb-4"></h3>
+                            <p id="project-modal-desc" class="text-gray-600 dark:text-gray-300 mb-6"></p>
+                            <div class="mb-6">
+                                <h4 class="text-lg font-semibold mb-3">Technologies Used</h4>
+                                <div id="project-modal-tech" class="flex flex-wrap gap-2"></div>
+                            </div>
+                            <button onclick="showRoleContent()" class="inline-block bg-primary text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition-colors">
+                                Role
+                            </button>
+                        </div>
+
+                        <!-- Role Content (initially hidden) -->
+                        <div id="project-role-content" class="absolute inset-0 bg-white dark:bg-gray-800 p-6 opacity-0 invisible transition-all duration-500 ease-in-out transform translate-x-full">
+                            <button onclick="hideRoleContent()" class="absolute top-4 left-6 text-gray-500 hover:text-gray-700 dark:text-gray-400 dark:hover:text-gray-200 flex items-center">
+                                <svg class="w-5 h-5 mr-1" fill="none" stroke="currentColor" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M15 19l-7-7 7-7"></path>
+                                </svg>
+                                <span>Back</span>
+                            </button>
+                            <h3 id="project-role-title" class="text-2xl font-bold mb-4">My Role</h3>
+                            <div id="project-role-desc" class="text-gray-600 dark:text-gray-300 mb-6">
+                                <!-- Role content will be inserted here -->
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <style>
+        #project-role-content {
+            overflow-y: auto;
+            max-height: calc(90vh - 48px);
+            padding-top: 2.5rem; /* Make space for the back button */
+        }
+        
+        #project-main-content {
+            backface-visibility: hidden;
+        }
+        
+        #project-modal {
+            transition: opacity 0.3s ease, visibility 0.3s ease;
+            z-index: 1000;
+        }
+        #project-modal .relative {
+            position: relative;
+        }
+        #project-modal.active {
+            opacity: 1;
+            visibility: visible;
+        }
+        .project-images {
+            position: relative;
+            min-height: 300px;
+        }
+        .project-images img {
+            transition: opacity 0.3s ease;
+        }
+    </style>
+
+    <script>
+        // Image Modal
+        function openImageModal(imageSrc, title) {
+            const modal = document.getElementById('certificate-modal');
+            const modalImg = document.getElementById('modal-image');
+            const viewAllButton = document.querySelector('#organization .absolute.bottom-6.right-6');
+            
+            // Hide the View All button when opening the modal
+            if (viewAllButton) {
+                viewAllButton.style.display = 'none';
+            }
+            
+            modalImg.src = imageSrc;
+            modalImg.alt = title;
+            modal.classList.remove('hidden');
+            modal.classList.add('flex');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        // Close modal function
+        function closeModal() {
+            const modal = document.getElementById('certificate-modal');
+            const viewAllButton = document.querySelector('#organization .absolute.bottom-6.right-6');
+            
+            // Show the View All button when closing the modal
+            if (viewAllButton) {
+                viewAllButton.style.display = 'block';
+            }
+            
+            modal.classList.add('hidden');
+            modal.classList.remove('flex');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Certificate Modal (legacy function, using openImageModal instead)
+        function openModal(imageSrc, title) {
+            openImageModal('image/certificate/' + imageSrc, title);
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('certificate-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal when clicking the close button
+        document.getElementById('close-modal').addEventListener('click', closeModal);
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Profile picture elements
+        const profileDark = document.getElementById('profile-dark');
+        const profileLight = document.getElementById('profile-light');
+
+        // Function to update profile picture based on theme
+        function updateProfilePicture() {
+            const isDark = document.documentElement.classList.contains('dark');
+            if (isDark) {
+                // Dark mode - show dark image
+                profileDark.classList.remove('opacity-0');
+                profileLight.classList.add('opacity-0');
+            } else {
+                // Light mode - show light image
+                profileDark.classList.add('opacity-0');
+                profileLight.classList.remove('opacity-0');
+            }
+        }
+
+        // Role content for each project
+        const projectRoles = {
+            'Board Game Hands on Heroes': {
+                title: 'My Role in Hands on Heroes',
+                description: 'As the project lead for Hands on Heroes, I was responsible for conceptualizing and developing an inclusive board game that teaches Indonesian Sign Language (BISINDO). My role involved designing the game mechanics, creating educational content, and ensuring the game was accessible to all players. I collaborated with sign language experts to ensure accuracy and cultural sensitivity in the game\'s content.'
+            },
+            // Add more projects here as needed
+        };
+
+        // Show role content
+        function showRoleContent() {
+            const mainContent = document.getElementById('project-main-content');
+            const roleContent = document.getElementById('project-role-content');
+            const title = document.getElementById('project-modal-title').textContent;
+            
+            // Set role content based on project
+            if (projectRoles[title]) {
+                document.getElementById('project-role-title').textContent = projectRoles[title].title;
+                document.getElementById('project-role-desc').textContent = projectRoles[title].description;
+            } else {
+                document.getElementById('project-role-title').textContent = 'My Role';
+                document.getElementById('project-role-desc').textContent = 'Role details will be added soon.';
+            }
+            
+            // Animate
+            mainContent.style.opacity = '0';
+            mainContent.style.transform = 'translateX(-20px)';
+            
+            setTimeout(() => {
+                mainContent.classList.add('invisible');
+                roleContent.classList.remove('invisible', 'opacity-0', 'translate-x-full');
+                roleContent.classList.add('opacity-100', 'translate-x-0');
+            }, 250);
+        }
+
+        // Hide role content
+        function hideRoleContent() {
+            const mainContent = document.getElementById('project-main-content');
+            const roleContent = document.getElementById('project-role-content');
+            
+            roleContent.classList.remove('opacity-100', 'translate-x-0');
+            roleContent.classList.add('opacity-0', 'translate-x-full');
+            
+            setTimeout(() => {
+                roleContent.classList.add('invisible');
+                mainContent.classList.remove('invisible');
+                mainContent.style.opacity = '1';
+                mainContent.style.transform = 'translateX(0)';
+            }, 250);
+        }
+
+        // Project Modal Functions
+        function openProjectModal(title, description, technologies, darkImage, lightImage) {
+            const modal = document.getElementById('project-modal');
+            document.getElementById('project-modal-title').textContent = title;
+            document.getElementById('project-modal-desc').textContent = description;
+            
+            const techContainer = document.getElementById('project-modal-tech');
+            techContainer.innerHTML = '';
+            technologies.forEach(tech => {
+                const techTag = document.createElement('span');
+                techTag.className = 'bg-gray-200 dark:bg-gray-700 text-gray-800 dark:text-gray-200 px-3 py-1 rounded-full text-sm';
+                techTag.textContent = tech;
+                techContainer.appendChild(techTag);
+            });
+
+            document.getElementById('project-modal-dark').src = darkImage;
+            document.getElementById('project-modal-light').src = lightImage;
+            
+            document.body.style.overflow = 'hidden';
+            modal.classList.add('active');
+        }
+
+        function closeProjectModal() {
+            const modal = document.getElementById('project-modal');
+            const mainContent = document.getElementById('project-main-content');
+            const roleContent = document.getElementById('project-role-content');
+            
+            // Reset to show main content when modal is closed
+            mainContent.style.opacity = '1';
+            mainContent.style.transform = 'translateX(0)';
+            mainContent.classList.remove('invisible');
+            
+            // Hide role content
+            roleContent.classList.add('invisible', 'opacity-0', 'translate-x-full');
+            roleContent.classList.remove('opacity-100', 'translate-x-0');
+            
+            document.body.style.overflow = 'auto';
+            modal.classList.remove('active');
+        }
+
+        // Organization Modal Functions
+        function openOrgModal(title, image, role, year, description) {
+            const modal = document.getElementById('orgModal');
+            const modalImage = document.getElementById('modalOrgImage');
+            const modalTitle = document.getElementById('modalOrgTitle');
+            const modalRole = document.getElementById('modalOrgRole');
+            const modalBadge = document.getElementById('modalOrgBadge');
+            const modalDescription = document.getElementById('modalOrgDescription');
+            const modalColor = document.getElementById('modalOrgColor');
+            
+            // Set modal content
+            modalImage.src = image;
+            modalImage.alt = title;
+            modalTitle.textContent = title;
+            modalRole.textContent = role;
+            modalBadge.textContent = year;
+            modalDescription.textContent = description;
+            
+            // Set color based on year for the dot indicator
+            if (year.includes('2023')) {
+                modalColor.className = 'w-3 h-3 rounded-full mr-2 bg-purple-500';
+                modalBadge.className = 'absolute bottom-4 right-4 bg-purple-500 text-white text-sm font-bold px-3 py-1 rounded-full';
+            } else if (year.includes('2020')) {
+                modalColor.className = 'w-3 h-3 rounded-full mr-2 bg-blue-500';
+                modalBadge.className = 'absolute bottom-4 right-4 bg-blue-500 text-white text-sm font-bold px-3 py-1 rounded-full';
+            } else {
+                modalColor.className = 'w-3 h-3 rounded-full mr-2 bg-green-500';
+                modalBadge.className = 'absolute bottom-4 right-4 bg-green-500 text-white text-sm font-bold px-3 py-1 rounded-full';
+            }
+            
+            // Show modal
+            modal.classList.remove('hidden');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeOrgModal() {
+            const modal = document.getElementById('orgModal');
+            modal.classList.add('hidden');
+            document.body.style.overflow = 'auto';
+        }
+        
+        // Close modal when clicking outside content
+        document.getElementById('orgModal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeOrgModal();
+            }
+        });
+        
+        // Close modal when clicking outside content
+        document.getElementById('project-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeProjectModal();
+            }
+        });
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            const modal = document.getElementById('project-modal');
+            if (e.key === 'Escape' && modal.classList.contains('active')) {
+                closeProjectModal();
+            }
+        });
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.theme = isDark ? 'dark' : 'light';
+                updateProfilePicture();
+            });
+        }
+
+        // Set initial theme and profile picture
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+        
+        // Initialize profile picture based on initial theme
+        document.addEventListener('DOMContentLoaded', () => {
+            updateProfilePicture();
+        });
+
+        // Scroll animation
+        function animateOnScroll() {
+            const elements = document.querySelectorAll('.animate-slide-up, .animate-fade-in');
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('animate');
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            });
+
+            elements.forEach(element => {
+                observer.observe(element);
+            });
+        }
+
+        // Mobile menu functionality
+        (function() {
+            const mobileMenuButton = document.getElementById('mobile-menu-button');
+            const mobileMenu = document.getElementById('mobile-menu');
+            let isMenuOpen = false;
+
+            function toggleMobileMenu() {
+                isMenuOpen = !isMenuOpen;
+                mobileMenu.classList.toggle('hidden');
+                mobileMenuButton.setAttribute('aria-expanded', isMenuOpen);
+                
+                // Toggle between hamburger and close icon
+                const icon = mobileMenuButton.querySelector('i');
+                if (isMenuOpen) {
+                    icon.classList.remove('fa-bars');
+                    icon.classList.add('fa-times');
+                    document.body.style.overflow = 'hidden'; // Prevent scrolling when menu is open
+                } else {
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    document.body.style.overflow = ''; // Re-enable scrolling
+                }
+            }
+
+            // Close menu when clicking on a link
+            document.querySelectorAll('#mobile-menu a').forEach(link => {
+                link.addEventListener('click', () => {
+                    mobileMenu.classList.add('hidden');
+                    document.body.style.overflow = '';
+                    const icon = mobileMenuButton.querySelector('i');
+                    icon.classList.remove('fa-times');
+                    icon.classList.add('fa-bars');
+                    isMenuOpen = false;
+                });
+            });
+
+            // Toggle mobile menu
+            if (mobileMenuButton && mobileMenu) {
+                mobileMenuButton.addEventListener('click', toggleMobileMenu);
+
+                // Close menu when clicking outside
+                document.addEventListener('click', (e) => {
+                    const isClickInside = mobileMenuButton.contains(e.target) || mobileMenu.contains(e.target);
+                    if (!isClickInside && isMenuOpen) {
+                        toggleMobileMenu();
+                    }
+                });
+            }
+        })();
+
+        // Initialize scroll animation and skill bars
+        document.addEventListener('DOMContentLoaded', () => {
+            // Add animation classes to elements
+            const animateElements = document.querySelectorAll('.fade-in, .slide-in-left, .slide-in-right, .zoom-in, .staggered-item');
+            
+            // Intersection Observer for scroll animations
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        // Add delay based on element's position on the page
+                        const elementTop = entry.target.getBoundingClientRect().top;
+                        const elementVisible = 150;
+                        
+                        if (elementTop < window.innerHeight - elementVisible) {
+                            entry.target.classList.add('visible');
+                            
+                            // For staggered items, add delay based on index
+                            if (entry.target.classList.contains('staggered-item')) {
+                                const index = Array.from(entry.target.parentElement.children).indexOf(entry.target);
+                                entry.target.style.transitionDelay = `${index * 0.1}s`;
+                            }
+                        }
+                    }
+                });
+            }, {
+                threshold: 0.1,
+                rootMargin: '0px 0px -100px 0px'
+            });
+
+            // Initialize skill bars
+            const hardSkills = document.getElementById('hard-skills');
+            const softSkills = document.getElementById('soft-skills');
+
+            // Add hover effect for hard skills
+            hardSkills.addEventListener('mouseenter', () => {
+                hardSkills.classList.add('filled');
+            });
+
+            // Add hover effect for soft skills
+            softSkills.addEventListener('mouseenter', () => {
+                softSkills.classList.add('filled');
+            });
+
+            // Observe all animated elements with immediate check
+            animateElements.forEach(el => {
+                observer.observe(el);
+                // Trigger initial check for elements already in view
+                const rect = el.getBoundingClientRect();
+                if (rect.top < window.innerHeight && rect.bottom > 0) {
+                    el.classList.add('animate');
+                }
+            });
+
+            // Initialize animations
+            animateOnScroll();
+        });
+    </script>
+</body>
+</html>

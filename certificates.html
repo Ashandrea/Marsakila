@@ -1,0 +1,464 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Certificates - Marsakila Rimu Nariya</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#1F2937',
+                        darker: '#111827',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Modal animation */
+        #certificate-modal {
+            opacity: 0;
+            transition: opacity 0.3s ease-in-out;
+        }
+        #certificate-modal.show {
+            opacity: 1;
+            display: flex !important;
+        }
+        #modal-image {
+            transform: scale(0.9);
+            transition: transform 0.3s ease-in-out;
+        }
+        #certificate-modal.show #modal-image {
+            transform: scale(1);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-darker text-gray-800 dark:text-gray-200">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/80 dark:bg-darker/80 backdrop-blur-md z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <a href="index.html" class="text-2xl font-bold">
+                    <span class="text-primary">Marsakila Rimu Nariya</span> 
+                </a>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+                <button class="md:hidden" id="mobile-menu-button">
+                    <i class="fas fa-bars text-2xl"></i>
+                </button>
+            </div>
+            <!-- Mobile menu -->
+            <div id="mobile-menu" class="md:hidden hidden mt-4 space-y-2">
+                <a href="index.html#home" class="block py-2 hover:text-primary transition">Home</a>
+                <a href="index.html#about" class="block py-2 hover:text-primary transition">About</a>
+                <a href="index.html#projects" class="block py-2 hover:text-primary transition">Projects</a>
+                <a href="certificates.html" class="block py-2 text-primary font-medium">Certificates</a>
+                <a href="index.html#contact" class="block py-2 hover:text-primary transition">Contact</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- Certificates Header -->
+    <header class="pt-32 pb-20 bg-gradient-to-r from-primary to-secondary text-white">
+        <div class="max-w-6xl mx-auto px-6 text-center">
+            <h1 class="text-4xl md:text-5xl font-bold mb-4">My Certificates</h1>
+            <p class="text-xl opacity-90 max-w-2xl mx-auto">A collection of my achievements and certifications in web development and design</p>
+        </div>
+    </header>
+
+    <!-- Back Button -->
+    <div class="pt-24 pb-4 px-6 max-w-6xl mx-auto">
+        <a href="home.html" class="inline-flex items-center bg-blue-500 dark:bg-white text-white dark:text-blue-500 hover:bg-blue-600 dark:hover:bg-gray-100 px-4 py-2 rounded-lg shadow-sm transition-all duration-200 border border-blue-600 dark:border-gray-300">
+            <i class="fas fa-arrow-left mr-2"></i>
+            <span>Kembali ke Portofolio</span>
+        </a>
+    </div>
+
+    <!-- Certificates Navigation -->
+    <div class="sticky top-20 z-40 bg-white/80 dark:bg-gray-800/80 backdrop-blur-md shadow-sm py-4">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="flex flex-wrap gap-2 md:gap-4 overflow-x-auto py-2 scrollbar-hide">
+                <a href="#academic" class="px-4 py-2 rounded-full bg-blue-100 dark:bg-blue-900 text-blue-700 dark:text-blue-200 hover:bg-blue-200 dark:hover:bg-blue-800 transition-colors whitespace-nowrap">
+                    <i class="fas fa-graduation-cap mr-2"></i> Academic
+                </a>
+                <a href="#Copyright" class="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors whitespace-nowrap">
+                    <i class="fas fa-trophy mr-2"></i> Copyright
+                </a>
+                <a href="#organization" class="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors whitespace-nowrap">
+                    <i class="fas fa-users mr-2"></i> Organization
+                </a>
+                <a href="#workshop" class="px-4 py-2 rounded-full bg-gray-100 dark:bg-gray-700 text-gray-700 dark:text-gray-200 hover:bg-gray-200 dark:hover:bg-gray-600 transition-colors whitespace-nowrap">
+                    <i class="fas fa-laptop-code mr-2"></i> Workshop
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Certificates Section -->
+    <section class="py-8 bg-white dark:bg-gray-800">
+        <div class="max-w-6xl mx-auto px-6">
+            <!-- Academic Section -->
+            <section id="academic" class="mb-16 scroll-mt-24">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-primary inline-block">Academic Certificate</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                <!-- Certificate 1 -->
+                <div class="certificate-card bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                        <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('image/certificate/Essai_Astra.png', '1st Place National Essay Competition')">
+                            <img src="image/certificate/Essai_Astra.png" alt="1st Place National Essay Competition" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-medium mb-2">1st Place National Essay Competition</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Issued by: ASTRAtech - 15 December 2024</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar-alt mr-2"></i>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Certificate 4 -->
+                 <div class="certificate-card bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('image/certificate/Juara1_KIR.png', '1st place in scientific paper competition')">
+                        <img src="image/certificate/Juara1_KIR.png" alt="Juara 1 KIR" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-semibold mb-2">1st place in scientific paper competition</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Issued by: SMAN 1 Ciruas</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar-alt mr-2"></i>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+
+                 <!-- Certificate 5 -->
+                 <div class="certificate-card bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('image/certificate/OPSI.png', 'Indonesian Student Research Olympiad')">
+                        <img src="image/certificate/OPSI.png" alt="OPSI" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-medium mb-2">Indonesian Student Research Olympiad</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Issued by: Ministry of Education, Culture, Research and Technology of the Republic of Indonesia - 14 October 2024 - 28847/BPTI/SMA/2024</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar-alt mr-2"></i>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </div>
+               
+
+                </div>
+            </section>
+
+            <!-- Competition Section -->
+            <section id="Copyright" class="mb-16 scroll-mt-24">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-primary inline-block">Copyright Certificate</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Competition certificates will go here -->
+                <!-- Certificate 2 -->
+                <div class="certificate-card bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('image/certificate/HAKI.png', 'Intellectual Property Rights')">
+                        <img src="image/certificate/HAKI.png" alt="Intellectual Property Rights" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-medium mb-2">Intellectual Property Rights</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Issued by: Ministry of Law and Human Rights of the Republic of Indonesia - 26 November 2024 - EC002024234768</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar-alt mr-2"></i>
+                            <span>2024</span>
+                        </div>
+                    </div>
+                </div>
+
+                </div>
+            </section>
+
+            <!-- Organization Section -->
+            <section id="organization" class="mb-16 scroll-mt-24">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-primary inline-block">Organization Certificate</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Certificate 3 -->
+                <div class="certificate-card bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('image/certificate/DutaAnakBanten.png', 'Banten Childrens Ambassador')">
+                        <img src="image/certificate/DutaAnakBanten.png" alt="Duta Anak Banten" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-medium mb-2">Banten Childrens Ambassador</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Issued by: Women's Empowerment, Child Protection, Population, Family Planning Service - 7 juli 2023</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar-alt mr-2"></i>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+                <!-- Certificate 6 -->
+                <div class="certificate-card bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('image/certificate/PertemuanForumAnakNasional.png', 'National Childrens Forum Meeting')">
+                        <img src="image/certificate/PertemuanForumAnakNasional.png" alt="National Childrens Forum Meeting" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-medium mb-2">National Childrens Forum Meeting</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Issued by: Ministry of Women's Empowerment and Child Protection of the Republic of Indonesia - 23 July 2023 - 1476/D.PHA.3/KP.06.07/7/2023</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar-alt mr-2"></i>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+                 <!-- Certificate 2 -->
+                 <div class="certificate-card bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                    <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('image/certificate/FinalisDutaAnakBanten.png', 'Serang Regency Childrens Ambassador Finalists')">
+                        <img src="image/certificate/FinalisDutaAnakBanten.png" alt="Serang Regency Childrens ambassador finalists" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                    </div>
+                    <div class="p-6">
+                        <h3 class="text-xl font-medium mb-2">Serang Regency Childrens Ambassador Finalists</h3>
+                        <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Issued by: Family Planning, Women's Empowerment and Child Protection Service of Serang Regency - 20 May 2023 - 005/411/Duta Anak/DKBPPPA/2023</p>
+                        <div class="flex items-center text-sm text-gray-500">
+                            <i class="far fa-calendar-alt mr-2"></i>
+                            <span>2023</span>
+                        </div>
+                    </div>
+                </div>
+                    <!-- Organization certificates will go here -->
+                </div>
+            </section>
+
+            <!-- Workshop Section -->
+            <section id="workshop" class="mb-16 scroll-mt-24">
+                <h2 class="text-2xl font-bold mb-6 pb-2 border-b-2 border-primary inline-block">Workshop Certificate</h2>
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Certificate 1 -->
+                    <div class="certificate-card bg-white dark:bg-gray-700 rounded-xl shadow-md overflow-hidden hover:shadow-lg transition-all duration-300 hover:scale-105">
+                        <div class="h-48 overflow-hidden cursor-pointer" onclick="openModal('image/certificate/PublicSpeakinAstra.png', 'Public Speaking')">
+                            <img src="image/certificate/PublicSpeakinAstra.png" alt="Public Speaking" class="w-full h-full object-cover hover:scale-110 transition-transform duration-500">
+                        </div>
+                        <div class="p-6">
+                            <h3 class="text-xl font-medium mb-2">Public Speaking</h3>
+                            <p class="text-gray-600 dark:text-gray-300 text-sm mb-4">Issued by: ASTRAtech- 15 December 2024</p>
+                            <div class="flex items-center text-sm text-gray-500">
+                                <i class="far fa-calendar-alt mr-2"></i>
+                                <span>2024</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </section>
+
+    <!-- Certificate Modal -->
+    <div id="certificate-modal" class="fixed inset-0 bg-black/80 z-50 hidden items-center justify-center p-4">
+        <div class="relative max-w-5xl w-full max-h-[90vh]">
+            <button id="close-modal" class="absolute -top-10 right-0 text-white hover:text-gray-300">
+                <i class="fas fa-times text-2xl"></i>
+            </button>
+            <img id="modal-image" src="" alt="Certificate" class="max-w-full max-h-[80vh] mx-auto rounded-lg shadow-2xl">
+            <p id="modal-caption" class="text-white text-center mt-4 text-lg"></p>
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- About Column -->
+                <div class="fade-in">
+                    <h3 class="text-gray-800 dark:text-white text-xl font-bold mb-4">Marsakila Rimu Nariya</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Non Fiction Writer.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors transform hover:scale-125 duration-300">
+                            <i class="fab fa-github text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors transform hover:scale-125 duration-300">
+                            <i class="fab fa-linkedin text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-400 transition-colors transform hover:scale-125 duration-300">
+                            <i class="fab fa-instagram text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-gray-800 dark:text-white text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="home.html#home" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Home</a></li>
+                        <li><a href="home.html#about" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">About</a></li>
+                        <li><a href="home.html#projects" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Projects</a></li>
+                        <li><a href="home.html#certificates" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Certificates</a></li>
+                        <li><a href="home.html#contact" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-gray-800 dark:text-white text-lg font-semibold mb-4">Contact Me</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-2 text-primary"></i>
+                            <a href="mailto:marsakilarimu19@gmail.com" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">marsakilarimu19@gmail.com</a>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-2 text-primary"></i>
+                            <a href="https://wa.me/6282125346053" target="_blank" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">+62 821-2534-6053</a>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-primary"></i>
+                            <span class="text-gray-600 dark:text-gray-300">Serang, Banten, Indonesia</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+                <p>&copy; 2025 Marsakila Rimu Nariya. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <style>
+        /* Hide scrollbar for navigation */
+        .scrollbar-hide::-webkit-scrollbar {
+            display: none;
+        }
+        .scrollbar-hide {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+
+        /* Smooth scroll behavior */
+        html {
+            scroll-behavior: smooth;
+        }
+
+        /* Animation classes */
+        .certificate-card {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.6s ease-out, transform 0.6s ease-out;
+        }
+        
+        .certificate-card.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Staggered animation delay */
+        .certificate-card:nth-child(1) { transition-delay: 0.1s; }
+        .certificate-card:nth-child(2) { transition-delay: 0.2s; }
+        .certificate-card:nth-child(3) { transition-delay: 0.3s; }
+        .certificate-card:nth-child(4) { transition-delay: 0.4s; }
+        .certificate-card:nth-child(5) { transition-delay: 0.5s; }
+        .certificate-card:nth-child(6) { transition-delay: 0.6s; }
+    </style>
+    
+    <script>
+        // Intersection Observer for scroll animations
+        document.addEventListener('DOMContentLoaded', function() {
+            const observerOptions = {
+                threshold: 0.1,
+                rootMargin: '0px 0px -50px 0px'
+            };
+            
+            const observer = new IntersectionObserver((entries) => {
+                entries.forEach(entry => {
+                    if (entry.isIntersecting) {
+                        entry.target.classList.add('visible');
+                        observer.unobserve(entry.target);
+                    }
+                });
+            }, observerOptions);
+            
+            // Observe all certificate cards
+            document.querySelectorAll('.certificate-card').forEach(card => {
+                observer.observe(card);
+            });
+        });
+        
+        // Certificate Modal
+        function openModal(imageSrc, title) {
+            const modal = document.getElementById('certificate-modal');
+            const modalImg = document.getElementById('modal-image');
+            const modalCaption = document.getElementById('modal-caption');
+            
+            modalImg.src = imageSrc;
+            modalImg.alt = title;
+            modalCaption.textContent = title;
+            modal.classList.add('show');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeModal() {
+            const modal = document.getElementById('certificate-modal');
+            modal.classList.remove('show');
+            document.body.style.overflow = 'auto';
+        }
+
+        // Close modal when clicking outside the image
+        document.getElementById('certificate-modal').addEventListener('click', function(e) {
+            if (e.target === this) {
+                closeModal();
+            }
+        });
+
+        // Close modal when clicking the close button
+        document.getElementById('close-modal').addEventListener('click', closeModal);
+
+        // Close modal with Escape key
+        document.addEventListener('keydown', function(e) {
+            if (e.key === 'Escape') {
+                closeModal();
+            }
+        });
+
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        if (mobileMenuButton) {
+            mobileMenuButton.addEventListener('click', () => {
+                mobileMenu.classList.toggle('hidden');
+            });
+        }
+
+        // Theme toggle
+        const themeToggle = document.getElementById('theme-toggle');
+        if (themeToggle) {
+            themeToggle.addEventListener('click', () => {
+                document.documentElement.classList.toggle('dark');
+                const isDark = document.documentElement.classList.contains('dark');
+                localStorage.theme = isDark ? 'dark' : 'light';
+            });
+        }
+
+        // Set initial theme
+        if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        } else {
+            document.documentElement.classList.remove('dark');
+        }
+    </script>
+</body>
+</html>

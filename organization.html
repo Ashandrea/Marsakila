@@ -1,0 +1,674 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Organization Timeline</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet">
+    <script>
+        tailwind.config = {
+            darkMode: 'class',
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#3B82F6',
+                        secondary: '#10B981',
+                        dark: '#1F2937',
+                        darker: '#111827',
+                    },
+                    animation: {
+                        'fade-in': 'fadeIn 0.5s ease-in-out',
+                        'slide-up': 'slideUp 0.5s ease-out',
+                    },
+                    keyframes: {
+                        fadeIn: {
+                            '0%': { opacity: '0' },
+                            '100%': { opacity: '1' },
+                        },
+                        slideUp: {
+                            '0%': { transform: 'translateY(20px)', opacity: '0' },
+                            '100%': { transform: 'translateY(0)', opacity: '1' },
+                        },
+                    },
+                },
+            },
+        }
+    </script>
+    <style>
+        /* Background styles */
+        body {
+            background-image: url('image/organization/bg2 organization.jpg');
+            background-attachment: fixed;
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Overlay for better text readability */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(255, 255, 255, 0.7);
+            z-index: -1;
+            transition: background-color 0.3s ease;
+        }
+
+        /* Dark mode overlay */
+        .dark body::before {
+            background-color: rgba(17, 24, 39, 0.85);
+        }
+
+        /* Ensure content is above the background */
+        .max-w-4xl {
+            position: relative;
+            z-index: 1;
+        }
+
+        .timeline {
+            position: relative;
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 80px 0 40px;
+        }
+        
+        /* Container timeline */
+        .timeline-item {
+            padding: 60px 0;
+            position: relative;
+            width: 100%;
+            display: flex;
+            justify-content: space-between;
+            opacity: 0;
+            transform: translateY(30px);
+            transition: all 0.5s ease;
+        }
+        
+        /* Alternating layout */
+        /* Odd items: image on left, text on right */
+        .timeline-item:nth-child(odd) .timeline-image-container {
+            order: 1;
+            text-align: right;
+            padding-right: 30px;
+        }
+        .timeline-item:nth-child(odd) .timeline-text {
+            order: 2;
+            text-align: left;
+            padding-left: 30px;
+        }
+        /* Even items: image on right, text on left */
+        .timeline-item:nth-child(even) .timeline-image-container {
+            order: 2;
+            text-align: left;
+            padding-left: 30px;
+        }
+        .timeline-item:nth-child(even) .timeline-text {
+            order: 1;
+            text-align: right;
+            padding-right: 30px;
+        }
+        
+        /* Elemen yang sudah masuk viewport */
+        .timeline-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+        
+        /* Konten kiri/kanan */
+        .timeline-content {
+            width: 48%;
+        }
+        
+        /* Tahun dengan box warna */
+        .timeline-year {
+            position: absolute;
+            left: 50%;
+            transform: translateX(-50%);
+            top: 40px;
+            padding: 6px 16px;
+            z-index: 2;
+            color: white;
+            font-weight: bold;
+            font-size: 0.95rem;
+            border-radius: 20px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.1);
+        }
+        
+        /* Warna tahun - hitam di mode terang, putih di mode gelap */
+        .timeline-year {
+            background-color: #000000; /* Hitam di mode terang */
+            color: #ffffff; /* Putih di mode terang */
+        }
+        
+        .dark .timeline-year {
+            background-color: #ffffff; /* Putih di mode gelap */
+            color: #000000; /* Hitam di mode gelap */
+        }
+        
+        /* Gambar */
+        .timeline-image {
+            width: 100%;
+            max-width: 400px;
+            height: 220px;
+            object-fit: cover;
+            border-radius: 8px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+            display: inline-block;
+        }
+        
+        .timeline-image:hover {
+            transform: scale(1.02);
+        }
+        
+        /* Judul */
+        .timeline-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #111827;
+            margin-bottom: 0.5rem;
+        }
+        
+        /* Subjudul */
+        .timeline-subtitle {
+            color: #6b7280;
+            margin-bottom: 1rem;
+            font-size: 0.95rem;
+        }
+        
+        /* Deskripsi */
+        .timeline-description {
+            color: #374151; /* Darker gray for better contrast in light mode */
+            line-height: 1.6;
+            font-size: 0.95rem;
+            font-weight: 400;
+        }
+        
+        .dark .timeline-description {
+            color: #e5e7eb; /* Lighter color for better contrast in dark mode */
+        }
+        
+        @media screen and (max-width: 768px) {
+            /* Tampilan vertikal di mobile */
+            .timeline-item {
+                flex-direction: column !important;
+                padding: 80px 0 0 0;
+                align-items: center;
+            }
+            
+            .timeline-content {
+                width: 90%;
+                padding: 0;
+                margin-bottom: 20px;
+                text-align: center !important;
+            }
+            
+            .timeline-image-container,
+            .timeline-text {
+                order: 0 !important;
+                text-align: center !important;
+            }
+            
+            /* Tahun di mobile */
+            .timeline-year {
+                left: 50%;
+                transform: translateX(-50%);
+                top: 30px;
+            }
+        }
+
+        /* Dark mode styles */
+        .dark .timeline-title {
+            color: #f3f4f6;
+        }
+        
+        .dark .timeline-subtitle {
+            color: #9ca3af;
+        }
+        
+        .dark .timeline-description {
+            color: #d1d5db;
+        }
+        
+        .dark .timeline-image {
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+        }
+    </style>
+</head>
+<body class="bg-gray-50 dark:bg-darker text-gray-800 dark:text-gray-200">
+    <!-- Navigation -->
+    <nav class="fixed w-full bg-white/80 dark:bg-darker/80 backdrop-blur-md z-50 shadow-sm">
+        <div class="max-w-6xl mx-auto px-6 py-4">
+            <div class="flex justify-between items-center">
+                <div class="flex items-center space-x-4">
+                    <a href="home.html" class="text-gray-600 dark:text-gray-300 hover:text-primary dark:hover:text-primary transition-colors">
+                        <i class="fas fa-arrow-left text-xl"></i>
+                    </a>
+                    <a href="#" class="text-2xl font-bold">
+                        <span class="text-primary">My Organization</span> 
+                    </a>
+                </div>
+                <button id="theme-toggle" class="p-2 rounded-full hover:bg-gray-200 dark:hover:bg-gray-700 transition-colors">
+                    <i class="fas fa-moon dark:hidden"></i>
+                    <i class="fas fa-sun hidden dark:block"></i>
+                </button>
+            </div>
+        </div>
+    </nav>
+
+    <div class="max-w-4xl mx-auto">
+        <div class="timeline">
+            <!-- 1 - Image Left, Text Right -->
+            <div class="timeline-item">
+                <div class="timeline-year">2023</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\1.jpg" alt="Student Council of SMAN 1 Ciruas" class="timeline-image">
+                    </div>
+                    
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Banten Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">National Children's Day</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            Representatives from Serang Regency at the 2023 National Children's Forum Meeting in Semarang successfully formulated the Voice of Indonesian Children before policymakers and met with other district/city delegates and shared experiences on issues and advocacy faced by children throughout Indonesia. 
+                        </p>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 2 - Image Right, Text Left -->
+            <div class="timeline-item">
+                <div class="timeline-year">2-8-2023</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Banten Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">Banten Children's Celebration</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            National Children's Day Celebration at Banten Province Level with the Acting Governor of Banten and PAUD Mothers. 
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\2.jpg" alt="Banten Children's Forum" class="timeline-image">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 3 - Image Left, Text Right -->
+            <div class="timeline-item">
+                <div class="timeline-year">13-8-2023</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\3.jpg" alt="Serang Regency Children's Forum" class="timeline-image">
+                    </div>
+                    
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Banten Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">National Children's Day at Banten Province Level</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            An activity to encourage enthusiasm and improve children's gross motor skills through various activities and competitions. This activity is organized by the Early Childhood Education Mothers Working Group (Pokja Bunda PAUD) of Banten Province.  
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 4 - Image Right, Text Left -->
+            <div class="timeline-item">
+                <div class="timeline-year">10-12-2023</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Banten Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">Step to Reminder: World AIDS Day</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            To commemorate World HIV and AIDS Day, the Banten Children's Forum held a fun activity, including a socialization session, games, and exciting performances. This event was a collaboration with the Serang City Children's Forum, the Serang Regency Children's Forum, and the Cilegon City Children's Forum.    
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\4.jpg" alt="Banten Children's Forum" class="timeline-image">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 5 - Image Left, Text Right -->
+            <div class="timeline-item">
+                <div class="timeline-year">28-2-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\5.jpg" alt="Serang Regency Children's Forum" class="timeline-image">
+                    </div>
+                    
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Banten Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">Companion From The Banten Children's Forum Delegation at Children's Musrenbang Tangerang Regency Children's Forum</p>
+                        <p class="timeline-description dark:text-gray-300">
+                           Musrenbang activities as well as a Comparative Study with the Bandung City Children's Forum.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 6 - Image Right, Text Left -->
+            <div class="timeline-item">
+                <div class="timeline-year">4-5-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">FAB</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">Gen-Z Creativity Festival</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            In order to optimize the character development of teenagers in the digital era, the PKK Team in synergy with the Banten Children's Forum (FAB) and the Banten Provincial Government will hold a Gen Z Creativity Festival throughout Banten Province with the theme "Digitally Competent Generation Towards a Smart Future (Society Era 5.0)", the activities that will be carried out are in the form of competitions participated by high school/vocational school/equivalent students throughout Banten Province.
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\6.jpg" alt="Banten Children's Forum" class="timeline-image">
+                    </div>
+                </div>
+            </div>
+
+             <!-- 7 - Image Left, Text Right -->
+             <div class="timeline-item">
+                <div class="timeline-year">25-5-2025</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\7.jpg" alt="Serang Regency Children's Forum" class="timeline-image">
+                    </div>
+                    
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Banten children's forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">Mental Health Talk Show</p>
+                        <p class="timeline-description dark:text-gray-300">
+                        Mental Health Talk Show This activity is a collaboration with Youth Ranger Indonesia in Banten Province.    
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 8 - Image Right, Text Left -->
+            <div class="timeline-item">
+                <div class="timeline-year">13-6-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Student Council at SMAN 1 Ciruas</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">12th grade farewell event</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            Becoming a committee member in the 12th grade farewell event "Thanks Giving and Return of Student SMAN 1 Ciruas"    
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\8.jpg" alt="Banten Children's Forum" class="timeline-image">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 9 - Image Left, Text Right -->
+            <div class="timeline-item">
+                <div class="timeline-year">23-6-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\9.jpg" alt="Serang Regency Children's Forum" class="timeline-image">
+                    </div>
+                    
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Serang Regency Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">Voice of Indonesian Children at Serang Regency Level 2024</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            Suara Anak Indonesia (SAI) represents the aspirations, needs, desires, and even concerns of Indonesian children regarding the fulfillment of their rights and special protections. Suara Anak Indonesia (SAI) is crucial in every region because it can serve as a foundation for regional development focused on fulfilling children's rights.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 10 - Image Right, Text Left -->
+            <div class="timeline-item">
+                <div class="timeline-year">1-7-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Banten Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">Banten Child Ambassador Selection 2024</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            This selection was conducted to find role models who act as a bridge between children and the government and become figures who inspire other children in fighting for and fulfilling the rights of Indonesian children, especially in Banten Province. 
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\10.jpg" alt="Banten Children's Forum" class="timeline-image">
+                    </div>
+                </div>
+            </div>
+
+            <!--11 - Image Left, Text Right -->
+            <div class="timeline-item">
+                <div class="timeline-year">4-7-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\11.jpg" alt="Serang Regency Children's Forum" class="timeline-image">
+                    </div>
+                    
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Serang Regency Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">Serang Regency Children's Ambassador Selection 2024</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            This selection was conducted to find role models who act as a bridge between children and the government and become figures who inspire other children in fighting for and fulfilling the rights of Indonesian children, especially in Serang Regency.
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+             <!-- 12 - Image Right, Text Left -->
+             <div class="timeline-item">
+                <div class="timeline-year">13-7-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Student Council at SMAN 1 Ciruas</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">MPLS (School Environment Introduction Period)</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            The committee in the MPLS (School Environment Introduction Period) activity as an initial activity in the transition period for new students from junior high school to high school.    
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\12.jpg" alt="Banten Children's Forum" class="timeline-image">
+                    </div>
+                </div>
+            </div>
+            
+            <!-- 13 - Image Left, Text Right -->
+            <div class="timeline-item">
+                <div class="timeline-year">24-7-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\13.jpg" alt="Serang Regency Children's Forum" class="timeline-image">
+                    </div>
+                    
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Banten Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">TURA (Banten Children's Tour)</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            TURA (Banten Children's Tour). An event part of the National Children's Day series. It's a visit and outreach program about the Banten Children's Forum at various schools in Banten Province.  
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 14 - Image Right, Text Left -->
+            <div class="timeline-item">
+                <div class="timeline-year">3-8-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Banten Children's Forum</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">National Children's Day Celebration 2024</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            National Children's Day Celebration at Banten Province Level with the Acting Governor of Banten and PAUD Mothers.
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\14.jpg" alt="Banten Children's Forum" class="timeline-image">
+                    </div>
+                </div>
+            </div>
+
+            <!-- 15 - Image Left, Text Right -->
+            <div class="timeline-item">
+                <div class="timeline-year">21-9-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\15.jpg" alt="Serang Regency Children's Forum" class="timeline-image">
+                    </div>
+                    
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white">Student Council at SMAN 1 Ciruas</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">Comparative Study</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            Carrying out comparative study activities as an activity to discuss and exchange views with SMAN 1 Cikande.   
+                        </p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 16 - Image Right, Text Left -->
+            <div class="timeline-item">
+                <div class="timeline-year">21-9-2024</div>
+                
+                <div class="flex justify-between w-full">
+                    <div class="timeline-content timeline-text">
+                        <h3 class="timeline-title dark:text-white"> Children's Forum Indonesian Joining Forces #KolaborasiBarengan</h3>
+                        <p class="timeline-subtitle dark:text-gray-300">National Children's Consultation 2024</p>
+                        <p class="timeline-description dark:text-gray-300">
+                            Participated in the National Child Consultation discussion held by the Indonesian Child Protection Commission (KPAI) offline in Jakarta.
+                        </p>
+                    </div>
+                    
+                    <div class="timeline-content timeline-image-container">
+                        <img src="image\organization\16.jpg" alt="Banten Children's Forum" class="timeline-image">
+                    </div>
+                </div>
+            </div>
+
+        </div>
+    </div>
+
+    <!-- Footer Section -->
+    <footer class="bg-gray-100 dark:bg-gray-800 text-gray-700 dark:text-gray-300 py-12">
+        <div class="max-w-6xl mx-auto px-6">
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <!-- About Column -->
+                <div class="fade-in">
+                    <h3 class="text-gray-800 dark:text-white text-xl font-bold mb-4">Marsakila Rimu Nariya</h3>
+                    <p class="text-gray-600 dark:text-gray-300 mb-6">Non Fiction Writer.</p>
+                    <div class="flex space-x-6">
+                        <a href="#" class="text-gray-500 hover:text-primary dark:text-gray-400 dark:hover:text-primary transition-colors transform hover:scale-125 duration-300">
+                            <i class="fab fa-github text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-blue-600 dark:text-gray-400 dark:hover:text-blue-400 transition-colors transform hover:scale-125 duration-300">
+                            <i class="fab fa-linkedin text-2xl"></i>
+                        </a>
+                        <a href="#" class="text-gray-500 hover:text-pink-600 dark:text-gray-400 dark:hover:text-pink-400 transition-colors transform hover:scale-125 duration-300">
+                            <i class="fab fa-instagram text-2xl"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Quick Links -->
+                <div>
+                    <h3 class="text-gray-800 dark:text-white text-lg font-semibold mb-4">Quick Links</h3>
+                    <ul class="space-y-2">
+                        <li><a href="home.html#home" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Home</a></li>
+                        <li><a href="home.html#about" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">About</a></li>
+                        <li><a href="home.html#projects" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Projects</a></li>
+                        <li><a href="home.html#certificates" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Certificates</a></li>
+                        <li><a href="home.html#contact" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">Contact</a></li>
+                    </ul>
+                </div>
+
+                <!-- Contact Info -->
+                <div>
+                    <h3 class="text-gray-800 dark:text-white text-lg font-semibold mb-4">Contact Me</h3>
+                    <ul class="space-y-2">
+                        <li class="flex items-start">
+                            <i class="fas fa-envelope mt-1 mr-2 text-primary"></i>
+                            <a href="mailto:marsakilarimu19@gmail.com" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">marsakilarimu19@gmail.com</a>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-phone-alt mt-1 mr-2 text-primary"></i>
+                            <a href="https://wa.me/6282125346053" target="_blank" class="text-gray-600 hover:text-gray-800 dark:text-gray-300 dark:hover:text-white transition">+62 821-2534-6053</a>
+                        </li>
+                        <li class="flex items-start">
+                            <i class="fas fa-map-marker-alt mt-1 mr-2 text-primary"></i>
+                            <span class="text-gray-600 dark:text-gray-300">Serang, Banten, Indonesia</span>
+                        </li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="border-t border-gray-200 dark:border-gray-700 mt-8 pt-8 text-center text-gray-500 dark:text-gray-400 text-sm">
+                <p>&copy; 2025 Marsakila Rimu Nariya. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script>
+        // Animasi saat scroll
+        document.addEventListener('DOMContentLoaded', function() {
+            const timelineItems = document.querySelectorAll('.timeline-item');
+            
+            function checkVisibility() {
+                timelineItems.forEach(item => {
+                    const itemTop = item.getBoundingClientRect().top;
+                    const windowHeight = window.innerHeight;
+                    
+                    if (itemTop < windowHeight * 0.75) {
+                        item.classList.add('timeline-visible');
+                    }
+                });
+            }
+            
+            // Check saat load awal
+            checkVisibility();
+            
+            // Check saat scroll
+            window.addEventListener('scroll', checkVisibility);
+
+            // Theme toggle
+            const themeToggle = document.getElementById('theme-toggle');
+            if (themeToggle) {
+                themeToggle.addEventListener('click', () => {
+                    document.documentElement.classList.toggle('dark');
+                    const isDark = document.documentElement.classList.contains('dark');
+                    localStorage.theme = isDark ? 'dark' : 'light';
+                });
+            }
+
+            // Set initial theme
+            if (localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+                document.documentElement.classList.add('dark');
+            } else {
+                document.documentElement.classList.remove('dark');
+            }
+        });
+    </script>
+</body>
+</html>
